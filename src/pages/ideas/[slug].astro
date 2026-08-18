@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BackLink from '../../components/BackLink.astro';
+import { ideas } from '../../data/ideas';
+
+export function getStaticPaths() {
+  return ideas.map((idea) => ({
+    params: { slug: idea.slug },
+    props: { idea },
+  }));
+}
+
+const { idea } = Astro.props;
+---
+<BaseLayout title={`${idea.title} — Surinder Singh`}>
+  <main>
+    <div class="main-grid">
+      <BackLink href="/writing" label="Writing" direction="up" />
+      <h1>{idea.title}</h1>
+      <time class="article-meta" datetime={`2026-${idea.date.slice(0, 2)}-${idea.date.slice(3)}`}>{idea.dateLabel}</time>
+      <article class="prose">
+        <p>{idea.description}</p>
+      </article>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .article-meta {
+    display: block;
+    width: var(--content-width);
+    height: 28px;
+    margin: 0 0 42px;
+    color: var(--muted);
+    font: 400 16px/28px var(--display);
+  }
+  .prose {
+    width: var(--content-width);
+    max-width: var(--content-width);
+    color: var(--text);
+    position: relative;
+  }
+  .prose > :first-child { margin-top: 0; }
+  .prose p { font: 400 16px/28px var(--sans); }
+</style>

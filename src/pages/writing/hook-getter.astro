@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BackLink from '../../components/BackLink.astro';
+
+const code = [
+`const Component = () => {
+  const { data } = useSWR()
+
+  // useSWR also returns \`error\`, but it's unused here
+  // No need to re-render when \`error\` changes
+}`,
+`const useStore = createStore({
+  name: 'John',
+  username: 'johndoe',
+})
+
+function NameDisplay() {
+  const state = useStore()
+
+  // Should only re-render when state.name changes, as username is unused
+  return <input value={state.name} onChange={(e) => (state.name = e.target.value)} />
+}`,
+`function createStore(initial = {}) {
+  const state = initial
+  const listeners = new Set()
+
+  function subscribe(listener) {
+    listeners.add(listener)
+    return () => {
+      listeners.delete(listener)
+    }
+  }
+}`,
+`function setState(key, value) {
+  if (!Object.is(state[key], value)) {
+    state[key] = value
+    listeners.forEach((listener) => listener(state, key))
+  }
+}`,
+`return function useStore() {
+  const rerender = useState()[1]
+  const tracked = useRef({})
+  const stateRef = useRef(state)
+
+  const proxy = useMemo(() => {
+    stateRef.current = state
+
+    return new Proxy(
+      {},
+      {
+        get(_, property) {
+          tracked.current[property] = true
+          return stateRef.current[property]
+        },
+        set(_, property, value) {
+          setState(property, value)
+          return true
+        },
+      },
+    )
+  }, [])
+}`,
+`useEffect(() => {
+  const unsub = subscribe((_, key) => {
+    if (tracked.current[key]) {
+      rerender({})
+    }
+  })
+
+  return unsub
+}, [])`,
+`return proxy`,
+];
+---
+<BaseLayout title="React Hook Getter Pattern — Paco Coursey">
+  <main>
+    <div class="main-grid">
+      <BackLink href="/writing" label="Writing" direction="up" />
+      <h1>React Hook Getter Pattern</h1>
+      <time class="article-meta">September 27, 2021</time>
+      <article class="prose">
+        <p>The data fetching library <a href="https://github.com/vercel/swr">swr</a> uses a clever technique to drastically reduce the number of React re-renders in components that share state. I call it <em>hook getters</em>, and just like <a href="https://github.com/pmndrs/zustand#selecting-multiple-state-slices">state selectors</a>, it stems from this idea: if you never use a certain value, why re-render when that value changes?</p>
+        <p>For example:</p>
+        <pre><code>{code[0]}</code></pre>
+        <p>Instead of selector callbacks, SWR uses JavaScript <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get"><code>getters</code></a> to detect when values are being read, and will only re-render for relevant changes. This trick only applies if your state is shared and object-like – which happens to be a majority of state and context in React!</p>
+        <h2 id="implementation">Implementation</h2>
+        <p>I wrote a <a href="https://github.com/pacocoursey/state">collection of concepts</a> that implement this pattern with a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy">Proxy</a>. Here’s the idea:</p>
+        <ul>
+          <li>Keep state outside of render lifecycle (could be ref, or global)</li>
+          <li>State returned from the hook is actually a proxy</li>
+          <li>When proxy <code>get</code> is invoked: track which object key is used, return the value</li>
+          <li>When proxy <code>set</code> is invoked: update state, broadcast to all listeners</li>
+          <li>In each hook, listen for broadcast but only re-render if the changed key is tracked</li>
+        </ul>
+        <p>Let’s model our state solution after Zustand, where you create state “stores” outside of render:</p>
+        <pre><code>{code[1]}</code></pre>
+        <p>When creating a store, we’ll track the state and any listeners. When each hook subscribes to the shared state, we just add it to a set of listeners.</p>
+        <pre><code>{code[2]}</code></pre>
+        <p>Setting state checks for equality and broadcasts to any listeners if the state changed:</p>
+        <pre><code>{code[3]}</code></pre>
+        <p>Finally, creating the store returns a hook to actually use the store. It creates a proxy that updates a <code>tracked</code> ref on any <code>get</code> access, and calls <code>setState</code> for any <code>set</code> access.</p>
+        <pre><code>{code[4]}</code></pre>
+        <p>When the hook mounts, it subscribes to the store and listens for any state broadcasts. It only forces a re-render when a state broadcast modified a key the hook is already tracking.</p>
+        <pre><code>{code[5]}</code></pre>
+        <p>Finally, return the proxy.</p>
+        <pre><code>{code[6]}</code></pre>
+        <p>That’s about it, a simple shared state system in about 50 lines. Full <a href="https://github.com/pacocoursey/state">code is here</a>.</p>
+      </article>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .article-meta {
+    display: block;
+    width: var(--content-width);
+    height: 28px;
+    margin: 0 0 42px;
+    color: var(--muted);
+    font: 400 16px/28px var(--display);
+  }
+  .prose { width: var(--content-width); max-width: var(--content-width); color: var(--text); position: relative; }
+  .prose > :first-child { margin-top: 0; }
+  .prose > :not(:last-child) { margin-bottom: 28px; }
+  .prose > h2 { margin-top: 56px; margin-bottom: 28px; }
+  .prose p, .prose li { font: 400 16px/28px var(--sans); }
+  .prose em { font: 400 italic 17px/normal var(--serif); }
+  .prose a { text-decoration: underline; text-decoration-color: #505050; text-decoration-thickness: 1px; text-underline-offset: 2.5px; }
+  .prose ul { margin: 16px 0 28px; padding-left: 16px; list-style: disc outside; }
+  .prose li { color: var(--text); }
+  .prose li + li { margin-top: 8px; }
+  .prose code { color: var(--text); background: #2e2e2e; border-radius: 6px; padding: 4px; font: 13px/24px var(--mono); }
+  .prose pre { overflow-x: auto; margin: 0; padding: 12px 16px; border-radius: 8px; background: var(--code-bg); tab-size: 4; font: 13px/24px var(--mono); }
+  .prose pre code { padding: 0; background: transparent; font: inherit; }
+</style>

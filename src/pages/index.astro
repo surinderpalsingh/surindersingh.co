@@ -1,0 +1,163 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { ideas } from '../data/ideas';
+
+const columns = [
+  {
+    title: 'Building',
+    items: [{ label: 'Timescale', description: 'Software for turning information into action.' }],
+  },
+  {
+    title: 'Projects',
+    items: [
+      { label: 'X-sort-like', href: 'https://github.com/surinderpalsingh/x-sort-like', external: true, description: 'Sort X replies by likes to avoid slop.' },
+    ],
+  },
+  {
+    title: 'Writing',
+    items: [
+      ...ideas
+        .filter((idea) => ['retention-is-the-business', 'delete-before-you-automate'].includes(idea.slug))
+        .map((idea) => ({ label: idea.title, href: `/writing/${idea.slug}`, description: idea.summary })),
+      { label: 'All writing', href: '/writing', description: 'The rest of my thoughts.' },
+    ],
+  },
+];
+---
+<BaseLayout title="Surinder Singh">
+  <main>
+    <div class="main-grid">
+      <article class="home-article">
+        <section class="intro">
+          <h1>Surinder Singh</h1>
+          <p>Building software and thinking about systems, business, and people. I like simplification, understanding and blowing past constraints, creating incentives in others, and turning ideas into things that work.</p>
+          <p>Previously studied chemical engineering at Cooper Union and minored in Computer Science and Bioengineering. Currently building Timescale.</p>
+        </section>
+
+        <section class="projects-band">
+          <div class="columns">
+            {columns.map((column) => (
+              <div class="column">
+                <h2>{column.title}</h2>
+                <div class="column-items">
+                  {column.items.map((item) => (
+                    <div class="item">
+                      {item.label && (item.href ? (
+                        <a class:list={['item-heading', item.external && 'external-link']} href={item.href} target={item.external ? '_blank' : undefined} rel={item.external ? 'noreferrer' : undefined}>
+                          {item.label}
+                          {item.external && (
+                            <span class="external" aria-hidden="true">
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" focusable="false" style="display:block;width:16px;height:16px">
+                                <path fill="currentColor" d="M5.6928 18.3072C5.30227 17.9167 5.30227 17.2835 5.69279 16.893L15.9857 6.6001L9.5999 6.6001C9.04762 6.6001 8.5999 6.15238 8.5999 5.6001C8.5999 5.04781 9.04762 4.6001 9.59991 4.6001L18.3999 4.6001C18.6651 4.6001 18.9195 4.70545 19.107 4.89299C19.2945 5.08053 19.3999 5.33488 19.3999 5.6001L19.3999 14.4001C19.3999 14.9524 18.9522 15.4001 18.3999 15.4001C17.8476 15.4001 17.3999 14.9522 17.3999 14.4001L17.3999 8.01432L7.10701 18.3072C6.71649 18.6977 6.08332 18.6977 5.6928 18.3072Z" />
+                              </svg>
+                            </span>
+                          )}
+                        </a>
+                      ) : (
+                        <span class="item-heading">{item.label}</span>
+                      ))}
+                      <p>{item.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section class="now">
+          <h2>Now</h2>
+          <p>Trying to get better at identifying the real problem before reaching for a solution.</p>
+          <p>I’m increasingly interested in building less: fewer features, fewer abstractions, fewer moving pieces. Software is useful to me insofar as it solves a real problem; the goal is not more software.</p>
+          <p>Outside of that, I spend a lot of time thinking about businesses, human behavior, science, and whatever rabbithole happens to be interesting that week.</p>
+        </section>
+
+        <section class="connect">
+          <h2>Connect</h2>
+          <p>Reach me at <a href="https://x.com/0xsurinder" target="_blank" rel="noreferrer">@0xsurinder</a> or <a href="mailto:singhsurinderny@gmail.com">singhsurinderny@gmail.com</a>.<br /><a href="https://github.com/surinderpalsingh" target="_blank" rel="noreferrer">GitHub</a><br />SWE Résumé, ChemE Résumé</p>
+        </section>
+      </article>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .home-article {
+    width: var(--content-width);
+    animation: none;
+    --home-entry-duration: 440ms;
+    --home-entry-stagger: 90ms;
+  }
+  .home-article > section {
+    animation: home-page-enter var(--home-entry-duration) var(--ease-out) both;
+  }
+  .home-article > .intro { animation-delay: 0ms; }
+  .home-article > .projects-band { animation-delay: var(--home-entry-stagger); }
+  .home-article > .now { animation-delay: calc(var(--home-entry-stagger) * 2); }
+  .home-article > .connect { animation-delay: calc(var(--home-entry-stagger) * 3); }
+
+  @keyframes home-page-enter {
+    from {
+      opacity: 0;
+      filter: blur(4px);
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateY(0);
+    }
+  }
+
+  .intro { margin-bottom: 28px; }
+  .intro h1, .intro p { margin-bottom: 28px; }
+  .intro p:last-child { margin-bottom: 0; }
+
+  .projects-band {
+    width: 100vw;
+    margin: 64px 0 28px calc((var(--content-width) - 100vw) / 2);
+    padding: 0 calc((100vw - var(--content-width)) / 2) 40px;
+  }
+
+  .columns { display: flex; gap: 32px; }
+  .column { width: 192px; flex: 0 0 192px; }
+  .column h2 { color: var(--muted); font: 400 14px/20px var(--sans); }
+  .column-items { margin-top: 20px; }
+  .item { min-height: 84px; }
+  .item + .item { margin-top: 24px; }
+  .item-heading { display: inline-flex; align-items: center; min-height: 28px; color: #ededed; font: 400 16px/28px var(--sans); vertical-align: top; white-space: nowrap; }
+  a.item-heading { text-decoration: underline; text-decoration-color: #505050; text-decoration-thickness: 1px; text-underline-offset: 2.5px; }
+  a.external-link { display: inline-flex; align-items: center; gap: 2px; white-space: nowrap; }
+  .item p { color: var(--muted); line-height: 28px; }
+  .external {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-left: 2px;
+    color: var(--muted);
+    text-decoration: none;
+    vertical-align: middle;
+    transform: translateY(-1px);
+    overflow: hidden;
+  }
+  .external svg { display: block; width: 16px; height: 16px; }
+
+  .now { margin-bottom: 60px; }
+  .now h2, .now p { margin-bottom: 28px; }
+  .now p:last-child { margin-bottom: 0; }
+  .connect h2 { margin-bottom: 28px; }
+
+  @media (max-width: 768px) {
+    .projects-band {
+      width: 100%;
+      margin: 64px 0 28px;
+      padding: 0 0 40px;
+    }
+    .columns { flex-direction: column; gap: 48px; }
+    .column { width: 100%; flex-basis: auto; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .home-article > section { animation: none; }
+  }
+</style>

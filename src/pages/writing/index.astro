@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BackLink from '../../components/BackLink.astro';
+import { ideas } from '../../data/ideas';
+
+const groups = [
+  { year: '2026', posts: [...ideas]
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .map((idea) => [idea.title, idea.date, `/writing/${idea.slug}`]) },
+];
+---
+<BaseLayout title="Writing — Paco Coursey">
+  <main>
+    <div class="main-grid">
+      <BackLink href="/" label="Index" />
+      <h1>Writing</h1>
+      <time class="index-meta" aria-hidden="true"></time>
+      <div class="index-wrapper">
+        <div class="index-table">
+          {groups.map((group) => (
+            <section class="year-group">
+              {group.posts.map((post, index) => (
+                <a class="index-row" href={post[2]}>
+                  {index === 0 && <span class="year">{group.year}</span>}
+                  <p>{post[0]}</p>
+                  <span class="date">{post[1]}</span>
+                </a>
+              ))}
+            </section>
+          ))}
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .index-meta { display: block; height: 0; margin-bottom: 42px; color: var(--muted); }
+  .index-wrapper { width: var(--content-width); }
+  .index-table { border-top: 1px solid var(--line); overflow: hidden; }
+  .year-group { position: relative; }
+  .index-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    margin: -1px 0 0 25%;
+    padding: 12px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    transition: opacity var(--motion-fast) var(--ease-out), border-color var(--motion-fast) var(--ease-out);
+  }
+  .index-row:first-child { border-top-color: transparent; }
+  .index-row:last-child { border-bottom-color: transparent; }
+  .index-row p { color: var(--text); line-height: 28px; }
+  .year {
+    position: absolute;
+    top: 12px;
+    left: -160px;
+    color: var(--dim);
+    font: 400 14px/20px var(--sans);
+  }
+  .date {
+    flex: 0 0 auto;
+    margin: 0 8px 0 16px;
+    color: var(--dim);
+    font: 400 14px/20px var(--sans);
+  }
+  @media (hover: hover) {
+    .index-wrapper:hover .index-row { opacity: .4; }
+    .index-wrapper:hover .index-row:hover { opacity: 1; }
+  }
+  @media (max-width: 768px) {
+    .index-row { margin-left: 64px; }
+    .year { left: -64px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .index-row { transition: none; }
+  }
+</style>

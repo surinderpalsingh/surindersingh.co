@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BackLink from '../../components/BackLink.astro';
+import { ideas } from '../../data/ideas';
+---
+<BaseLayout title="Ideas — Surinder Singh">
+  <main>
+    <div class="main-grid">
+      <BackLink href="/" label="Index" />
+      <h1>Ideas</h1>
+      <div class="ideas-list">
+        {ideas.map((idea) => (
+          <article class="idea">
+            <h2><a href={`/writing/${idea.slug}`}>{idea.title}</a></h2>
+            <p>{idea.summary}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .ideas-list { width: var(--content-width); }
+  .idea + .idea { margin-top: 56px; }
+  .idea h2 { margin-bottom: 28px; }
+</style>

@@ -1,0 +1,256 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="preload" href="/fonts/sohne-subset-0.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter-subset.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/newsreader-subset-0.woff2" as="font" type="font/woff2" crossorigin />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div id="app">
+      <slot />
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  @font-face {
+    font-family: 'Sohne';
+    src: url('/fonts/sohne-subset-0.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: block;
+  }
+
+  @font-face {
+    font-family: 'Inter';
+    src: url('/fonts/inter-subset.woff2') format('woff2');
+    font-weight: 400 700;
+    font-style: normal;
+    font-display: block;
+  }
+
+  @font-face {
+    font-family: 'Newsreader';
+    src: url('/fonts/newsreader-subset-0.woff2') format('woff2');
+    font-weight: 400;
+    font-style: italic;
+    font-display: block;
+  }
+
+  :root {
+    --page-width: 1072px;
+    --content-width: 640px;
+    --page-top: 128px;
+    --body-margin: max(24px, env(safe-area-inset-left));
+    --bg: #1a1a1a;
+    --fg: #f2f2f2;
+    --text: #e5e5e5;
+    --muted: #a0a0a0;
+    --dim: #707070;
+    --line: #2e2e2e;
+    --code-bg: #232323;
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --motion-fast: 160ms;
+    --motion-page: 280ms;
+    --sans: 'Sohne', 'Inter', system-ui, sans-serif;
+    --display: 'Inter', system-ui, sans-serif;
+    --serif: 'Newsreader', 'Signifier', Times, serif;
+    --mono: 'Menlo', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    font-size: 16px;
+    background: var(--bg);
+    color: var(--fg);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    overflow-anchor: none;
+  }
+
+  body {
+    min-height: 100%;
+    margin: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+  }
+
+  ::-webkit-scrollbar {
+    width: 11px;
+    height: 11px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    min-width: 44px;
+    min-height: 44px;
+    border: 5px solid transparent;
+    border-radius: 16px;
+    background: #343434;
+    background-clip: padding-box;
+  }
+
+  a { color: inherit; }
+
+  #app {
+    min-height: 100%;
+    padding: 0 var(--body-margin);
+  }
+
+  main {
+    min-height: 100vh;
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: var(--page-top) 0;
+    position: relative;
+  }
+
+  .main-grid {
+    display: grid;
+    grid-template-columns: 192px var(--content-width) 192px;
+    column-gap: 24px;
+    align-items: baseline;
+  }
+
+  .main-grid > * {
+    grid-column: 2;
+    animation: page-enter var(--motion-page) var(--ease-out) both;
+  }
+
+  .main-grid > .meta { animation-delay: 0ms; }
+  .main-grid > h1 { animation-delay: 45ms; }
+  .main-grid > .article-meta,
+  .main-grid > .index-meta { animation-delay: 90ms; }
+  .main-grid > .prose,
+  .main-grid > .index-wrapper { animation-delay: 135ms; }
+
+  .meta {
+    grid-column: 1;
+    position: sticky;
+    top: var(--page-top);
+    z-index: 1;
+    white-space: nowrap;
+  }
+
+  .meta a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font: 400 italic 20px/28px var(--serif);
+  }
+
+  .back-icon {
+    display: inline-block;
+    font: 400 20px/20px var(--sans);
+    transform: translateY(-1px);
+  }
+
+  h1, h2, p { margin: 0; }
+
+  h1 {
+    color: var(--text);
+    font: 500 16px/28px var(--display);
+  }
+
+  h2 {
+    color: var(--text);
+    font: 500 16px/28px var(--display);
+  }
+
+  p, li {
+    color: var(--text);
+    font: 400 16px/28px var(--sans);
+    letter-spacing: 0;
+    font-feature-settings: 'kern', 'frac', 'ss02';
+  }
+
+  em, i {
+    color: var(--fg);
+    font: 400 italic 17px/normal var(--serif);
+  }
+
+  a:not(.plain) {
+    text-decoration: underline;
+    text-decoration-color: #505050;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2.5px;
+    transition: color var(--motion-fast) var(--ease-out), text-decoration-color var(--motion-fast) var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    a:not(.plain):hover {
+      color: var(--fg);
+      text-decoration-color: var(--muted);
+    }
+  }
+
+  @keyframes page-enter {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .main-grid > *,
+    .home-article > section,
+    a:not(.plain) {
+      animation: none;
+      transition: none;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .main-grid {
+      grid-template-columns: auto var(--content-width) auto;
+      column-gap: 16px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    :root {
+      --page-top: 64px;
+      --content-width: 100%;
+    }
+
+    main { max-width: var(--content-width); }
+
+    .main-grid {
+      display: flex;
+      flex-direction: column;
+      align-items: unset;
+    }
+
+    .main-grid > * { width: 100%; }
+
+    .meta {
+      width: 100%;
+      margin: 0 0 42px;
+      position: relative;
+      top: 0;
+    }
+
+  }
+</style>
