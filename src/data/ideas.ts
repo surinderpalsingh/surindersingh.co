@@ -29,7 +29,7 @@ export const ideas = [
     date: '08/13',
     dateLabel: 'August 13, 2026',
     summary: 'Retention creates real value.',
-    description: 'Retention is very key for Timescale and I think we are getting stuff correct here that creates real value.',
+    description: 'Retention is very key for Parlor and I think we are getting stuff correct here that creates real value.',
   },
   {
     slug: 'delete-before-you-automate',
