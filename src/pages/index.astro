@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { ideas } from '../data/ideas';
+import { homeStructuredData, site } from '../data/site';
 
 const columns = [
   {
@@ -24,7 +25,7 @@ const columns = [
   },
 ];
 ---
-<BaseLayout title="Surinder Singh">
+<BaseLayout title={site.title} description={site.description} structuredData={homeStructuredData}>
   <main>
     <div class="main-grid">
       <article class="home-article">

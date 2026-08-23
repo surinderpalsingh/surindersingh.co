@@ -1,0 +1,10 @@
+# About Surinder Singh
+
+Surinder Singh builds software and thinks about systems, business, and people. He is interested in simplification, understanding and moving past constraints, creating useful incentives, and turning ideas into things that work. His approach starts with finding the real problem before reaching for a solution, because better problem selection usually matters more than adding another feature or abstraction.
+
+Surinder studied chemical engineering at The Cooper Union and minored in Computer Science and Bioengineering. That combination shaped an interest in how technical, biological, commercial, and social systems behave under constraints. He currently builds Parlor, software for turning information into action, and also develops small independent projects such as X-sort-like.
+
+His writing covers software economics, product retention, automation, organizational constraints, psychology, and anthropology. A recurring theme is building less: fewer features, fewer moving pieces, and fewer layers between a real problem and a useful result. Outside of software, he spends time reading about businesses, human behavior, science, and whichever rabbit hole is most interesting that week.
+
+- [Writing](https://surindersingh.co/writing/index.md)
+- [Contact](https://surindersingh.co/contact.md)

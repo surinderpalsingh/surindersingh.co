@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BackLink from './BackLink.astro';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+<BaseLayout title={`${title} — Surinder Singh`} description={description}>
+  <main>
+    <div class="main-grid">
+      <BackLink href="/" label="Index" />
+      <h1>{title}</h1>
+      <div class="page-meta" aria-hidden="true"></div>
+      <article class="prose">
+        <slot />
+      </article>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .page-meta {
+    display: block;
+    width: var(--content-width);
+    height: 28px;
+    margin: 0 0 42px;
+  }
+
+  .prose {
+    width: var(--content-width);
+    max-width: var(--content-width);
+    color: var(--text);
+    position: relative;
+  }
+
+  .prose > :first-child { margin-top: 0; }
+  .prose > :not(:last-child) { margin-bottom: 28px; }
+  .prose > h2 { margin-top: 56px; margin-bottom: 28px; }
+  .prose p, .prose li { font: 400 16px/28px var(--sans); }
+  .prose ul { margin: 0; padding-left: 16px; list-style: disc outside; }
+  .prose li + li { margin-top: 8px; }
+</style>

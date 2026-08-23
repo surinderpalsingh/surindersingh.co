@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BackLink from '../components/BackLink.astro';
+---
+<BaseLayout title="Page not found — Surinder Singh" description="The requested page does not exist. Use the recovery links to continue." noindex>
+  <main>
+    <div class="main-grid">
+      <BackLink href="/" label="Index" />
+      <h1>404 — Page not found</h1>
+      <div class="page-meta" aria-hidden="true"></div>
+      <article class="prose">
+        <p>That path does not exist. Try the <a href="/">home page</a>, browse <a href="/writing">writing</a>, read <a href="/llms.txt">agent instructions</a>, or inspect the <a href="/sitemap.xml">sitemap</a>.</p>
+      </article>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .page-meta { width: var(--content-width); height: 28px; margin: 0 0 42px; }
+  .prose { width: var(--content-width); max-width: var(--content-width); }
+</style>

@@ -1,8 +1,26 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "surindersingh-co",
+  "main": "./worker.mjs",
   "compatibility_date": "2026-08-17",
   "assets": {
-    "directory": "./dist"
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "404-page",
+    "run_worker_first": [
+      "/*",
+      "!/_astro/*",
+      "!/fonts/*",
+      "!/*.md",
+      "!/*.txt",
+      "!/*.xml",
+      "!/*.svg",
+      "!/*.png",
+      "!/*.jpg",
+      "!/*.jpeg",
+      "!/*.webp",
+      "!/*.ico"
+    ]
   }
 }

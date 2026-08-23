@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BackLink from '../../components/BackLink.astro';
 import { ideas } from '../../data/ideas';
+import { articleStructuredData } from '../../data/site';
 
 export function getStaticPaths() {
   return ideas.map((idea) => ({
@@ -12,7 +13,7 @@ export function getStaticPaths() {
 
 const { idea } = Astro.props;
 ---
-<BaseLayout title={`${idea.title} — Surinder Singh`}>
+<BaseLayout title={`${idea.title} — Surinder Singh`} description={idea.description} type="article" structuredData={articleStructuredData(idea)}>
   <main>
     <div class="main-grid">
       <BackLink href="/writing" label="Writing" direction="up" />

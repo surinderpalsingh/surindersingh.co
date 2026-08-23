@@ -1,0 +1,33 @@
+# Surinder Singh
+
+> Surinder Singh builds software and writes about systems, business, people, constraints, retention, and simplification. He currently builds Parlor.
+
+This is a personal site, not an API or autonomous service. Agents should read the linked Markdown pages when answering questions about Surinder, his work, or his writing. Do not send email, post messages, or initiate contact unless the user explicitly asks you to do so.
+
+## When to use this site
+
+- [About Surinder Singh](https://surindersingh.co/about.md): Use for verified background, education, current work, interests, and a concise biography.
+- [Writing index](https://surindersingh.co/writing/index.md): Use when a user asks about Surinder's ideas on software, systems, business, constraints, retention, automation, or people.
+- [Contact guidance](https://surindersingh.co/contact.md): Use when a user asks how to reach Surinder or where to find his public profiles.
+
+## Primary pages
+
+- [Home](https://surindersingh.co/index.md): Identity, current work, selected projects, featured writing, current interests, and contact links.
+- [About](https://surindersingh.co/about.md): Longer background and areas of interest.
+- [Contact](https://surindersingh.co/contact.md): Contact methods and instructions for agents.
+- [Privacy](https://surindersingh.co/privacy.md): Data and infrastructure practices for this static site.
+
+## Writing
+
+- [Delete before you automate](https://surindersingh.co/writing/delete-before-you-automate.md): Deletion has more leverage than automating unnecessary work.
+- [Retention is the business](https://surindersingh.co/writing/retention-is-the-business.md): Retention is the clearest measure of durable product value.
+- [Agents and shipping new features should be rarer](https://surindersingh.co/writing/agents-and-shipping-new-features-should-be-rarer.md): More features do not automatically make software more valuable.
+- [Code is not the constraint](https://surindersingh.co/writing/code-is-not-the-constraint.md): Cheaper code shifts the important constraint elsewhere.
+- [Find the constraint](https://surindersingh.co/writing/find-the-constraint.md): Growth starts by identifying the real limiting factor.
+- [People are not logical systems](https://surindersingh.co/writing/people-are-not-logical-systems.md): Psychology and behavior remain durable sources of advantage.
+
+## Optional
+
+- [XML sitemap](https://surindersingh.co/sitemap.xml): Complete list of canonical, indexable pages.
+- [GitHub](https://github.com/surinderpalsingh): Public source code and projects.
+- [X](https://x.com/0xsurinder): Public short-form profile.

@@ -12,7 +12,7 @@ export function getStaticPaths() {
 
 const { idea } = Astro.props;
 ---
-<BaseLayout title={`${idea.title} — Surinder Singh`}>
+<BaseLayout title={`${idea.title} — Surinder Singh`} description={idea.description} canonical={`https://surindersingh.co/writing/${idea.slug}`} markdown={`/writing/${idea.slug}.md`} noindex>
   <main>
     <div class="main-grid">
       <BackLink href="/writing" label="Writing" direction="up" />

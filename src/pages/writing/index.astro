@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BackLink from '../../components/BackLink.astro';
 import { ideas } from '../../data/ideas';
+import { site } from '../../data/site';
 
 const groups = [
   { year: '2026', posts: [...ideas]
@@ -9,7 +10,7 @@ const groups = [
     .map((idea) => [idea.title, idea.date, `/writing/${idea.slug}`]) },
 ];
 ---
-<BaseLayout title="Writing — Paco Coursey">
+<BaseLayout title={`Writing — ${site.name}`} description="Essays by Surinder Singh about software, systems, business, constraints, retention, and people.">
   <main>
     <div class="main-grid">
       <BackLink href="/" label="Index" />
