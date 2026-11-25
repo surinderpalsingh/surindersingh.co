@@ -1,0 +1,82 @@
+<div aria-hidden="true" class="sky">
+  <div class="sky-frame">
+    <canvas></canvas>
+    <div class="sky-still"></div>
+  </div>
+</div>
+
+<script>
+  import { mountSky, SKY_HEIGHT, stillSky } from '../lib/ascii-sky/index.ts';
+
+  const THEME = 'sunset';
+  const ASSETS = '/ascii-sky/';
+
+  const box = document.querySelector<HTMLElement>('.sky');
+  const canvas = box?.querySelector('canvas');
+  const still = box?.querySelector<HTMLElement>('.sky-still');
+
+  if (box && canvas && still) {
+    box.style.height = `${SKY_HEIGHT}px`;
+    const { background, imageRendering, opacity } = stillSky(THEME, ASSETS);
+    still.style.background = background;
+    still.style.imageRendering = imageRendering;
+    still.style.setProperty('--still-opacity', String(opacity));
+    mountSky(canvas, { theme: THEME, assets: ASSETS }).ready.catch(() => {
+      // Assets failed to load: the still gradient stays in place.
+    });
+  }
+</script>
+
+<style is:global>
+  :root {
+    --sky-hero: 240px;
+    --sky-faint: 280px;
+  }
+
+  @media (min-width: 768px) {
+    :root {
+      --sky-hero: 360px;
+      --sky-faint: 400px;
+    }
+  }
+
+  .sky {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 692px;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .sky-frame {
+    position: absolute;
+    inset: 0;
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(var(--sky-hero) - 60px), rgb(0 0 0 / 0.13) var(--sky-faint), rgb(0 0 0 / 0.065) calc(var(--sky-hero) + 300px), transparent);
+    mask-image: linear-gradient(to bottom, #000 calc(var(--sky-hero) - 60px), rgb(0 0 0 / 0.13) var(--sky-faint), rgb(0 0 0 / 0.065) calc(var(--sky-hero) + 300px), transparent);
+  }
+
+  .sky canvas,
+  .sky-still {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .sky canvas {
+    display: block;
+    opacity: 0;
+    transition: opacity 700ms;
+  }
+
+  .sky canvas[data-ready] { opacity: 1; }
+
+  .sky-still {
+    --still-opacity: 0;
+    z-index: -1;
+    opacity: var(--still-opacity);
+    transition: opacity 700ms;
+  }
+
+  .sky canvas[data-ready] + .sky-still { opacity: 0; }
+</style>

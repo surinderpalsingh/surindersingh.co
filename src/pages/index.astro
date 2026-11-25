@@ -1,4 +1,5 @@
 ---
+import AsciiSky from '../components/AsciiSky.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { ideas } from '../data/ideas';
 import { homeStructuredData, site } from '../data/site';
@@ -26,7 +27,8 @@ const columns = [
 ];
 ---
 <BaseLayout title={site.title} description={site.description} structuredData={homeStructuredData}>
-  <main>
+  <AsciiSky />
+  <main class="home-main">
     <div class="main-grid">
       <article class="home-article">
         <section class="intro">
@@ -83,6 +85,8 @@ const columns = [
 </BaseLayout>
 
 <style>
+  .home-main { padding-top: calc(var(--sky-hero) + 40px); }
+
   .home-article {
     width: var(--content-width);
     animation: none;
@@ -126,8 +130,8 @@ const columns = [
   .column-items { margin-top: 20px; }
   .item { min-height: 84px; }
   .item + .item { margin-top: 24px; }
-  .item-heading { display: inline-flex; align-items: center; min-height: 28px; color: #ededed; font: 400 16px/28px var(--sans); vertical-align: top; white-space: nowrap; }
-  a.item-heading { text-decoration: underline; text-decoration-color: #505050; text-decoration-thickness: 1px; text-underline-offset: 2.5px; }
+  .item-heading { display: inline-flex; align-items: center; min-height: 28px; color: var(--fg); font: 400 16px/28px var(--sans); vertical-align: top; white-space: nowrap; }
+  a.item-heading { text-decoration: underline; text-decoration-color: var(--underline); text-decoration-thickness: 1px; text-underline-offset: 2.5px; }
   a.external-link { display: inline-flex; align-items: center; gap: 2px; white-space: nowrap; }
   .item p { color: var(--muted); line-height: 28px; }
   .external {
